@@ -1,5 +1,6 @@
 import streamlit as st
 import base64
+import os
 from openai import OpenAI
 from io import BytesIO
 
@@ -20,7 +21,7 @@ if "donors" not in st.session_state:
 # Sidebar for API key
 with st.sidebar:
     st.header("⚙️ Configuration")
-    api_key = st.text_input("Enter your OpenAI API key", type="password")
+    api_key = os.getenv("OPENAI_API_KEY")
     st.info("This uses GPT-4o-mini for image-to-text OCR.")
 
 if not api_key:
