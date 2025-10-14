@@ -1,7 +1,7 @@
 streamlit
-openai 
+openai>=1.0.0
 openpyxl 
 pillow
 pandas
 python-dotenv
-
+requests
