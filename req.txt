@@ -1,5 +1,6 @@
 openai 
 openpyxl 
 pillow
+pandas
 python-dotenv
 streamlit
