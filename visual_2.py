@@ -105,7 +105,7 @@ def extract_form_data(image_bytes):
                     "role": "user",
                     "content": [
                         {"type": "text", "text": (
-                            "Extract donor details from this donation form:\n"
+                            "Extract handwritten donor details from this donation form:\n"
                             "1. Full Name\n2. Phone\n3. Email\n4. Donation Amount (number only)\n"
                             "Return exactly this format:\n"
                             "Full Name: [name]\nPhone: [phone]\nEmail: [email]\nAmount: [number]"
