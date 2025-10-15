@@ -356,20 +356,38 @@ if is_admin:
                     except:
                         time_str = timestamp
             
-                    # Show animated card
-                    with placeholder.container():
-                        card(
-                            title=f"🎁 {name}",
-                            content=f"**Donated:** ${amount}\n\n🕒 *{time_str}*",
-                            image="https://cdn-icons-png.flaticon.com/512/1998/1998671.png",  # decorative icon
-                            key=name + amount + time_str,
-                        )
-                        st.balloons()  # celebration each time
-                        st.toast(f"💖 New donation from {name}: ${amount}")
+                    # Create the HTML card
+                    card_html = f"""
+                    <div style="
+                        background: linear-gradient(135deg, #fefefe, #e8f8ff);
+                        border-radius: 20px;
+                        padding: 30px;
+                        box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+                        text-align: center;
+                        margin: 20px 0;
+                        font-family: 'Helvetica', sans-serif;
+                        animation: fadeIn 1s ease-in-out;
+                    ">
+                        <h2>🎉 {name}</h2>
+                        <h3 style='color:#007B83;'>Donated ${amount}</h3>
+                        <p style='color:gray;'>🕒 {time_str}</p>
+                    </div>
+                    <style>
+                        @keyframes fadeIn {{
+                            from {{ opacity: 0; transform: scale(0.95); }}
+                            to {{ opacity: 1; transform: scale(1); }}
+                        }}
+                    </style>
+                    """
+                    # Display the card
+                    placeholder.markdown(card_html, unsafe_allow_html=True)
+                    st.balloons()
+                    st.toast(f"💖 New donation from {name}: ${amount}")
                     
-                    # Keep each card for 3 seconds
+                    # Show for 3 seconds
                     time.sleep(3)
                     placeholder.empty()
+                                placeholder.empty()
             else:
                 st.info("No donations yet. Waiting for uploads...")
             
