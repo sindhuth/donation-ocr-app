@@ -377,7 +377,7 @@ if is_admin:
                         animation: fadeIn 1s ease-in-out;
                     ">
                         <h2 style='color:white;font-size: 3.5em;text-shadow: 2px 2px 4px rgba(0,0,0,0.3);'>{name}</h2>
-                        <h3 style='color:#FFD700;font-size: 4.5em;font-weight: bold;text-shadow: 2px 2px 4px rgba(0,0,0,0.3);'>Donated ${amount}</h3>
+                        <h3 style='color:#FFD700;font-size: 4.5em;font-weight: bold;text-shadow: 2px 2px 4px rgba(0,0,0,0.3);'>${amount}</h3>
                         <p style='color:yellow;'>Thank you for your generosity!</p>
                     </div>
                     <style>
