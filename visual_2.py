@@ -327,42 +327,50 @@ if is_admin:
             # Celebration when goal is reached
             if total >= GOAL:
                 st.success("🎉 **GOAL REACHED!** Thank you to all our donors!")
-            
+
+            # Display donors
             st.markdown("---")
             st.markdown("## 🙌 Live Donor Wall")
+
             
-            # Display donors
-            st.markdown("## 🙌 Live Donor Wall")
-            st.caption("Newest donations appear below — one at a time 💖")
             
-            # Create a container for the card
+            # Create a placeholder for the live donor card
             placeholder = st.empty()
             
-            if donors:
-                # Sort donors newest first
-                donors = sorted(donors, key=lambda x: x[4], reverse=True)
-                
-                for donor in donors:
-                    name = donor[0] or "Anonymous"
-                    phone = donor[1] or ""
-                    email = donor[2] or ""
-                    amount = donor[3] or "0"
-                    timestamp = donor[4]
+            # Retrieve donors from DB
+            donors = get_all_donors()
             
-                    # Format timestamp nicely
+            if donors:
+                # Get the newest donor (last entry)
+                latest_donor = donors[0]  # because we order by timestamp DESC
+                latest_id = latest_donor[0] if len(latest_donor) > 0 else None
+            
+                # Track the last shown donor in session state
+                if "last_shown_donor" not in st.session_state:
+                    st.session_state.last_shown_donor = None
+            
+                # If this donor hasn’t been shown yet
+                if latest_donor != st.session_state.last_shown_donor:
+                    name = latest_donor[0] or "Anonymous"
+                    phone = latest_donor[1] or ""
+                    email = latest_donor[2] or ""
+                    amount = latest_donor[3] or "0"
+                    timestamp = latest_donor[4]
+            
+                    # Format timestamp
                     try:
                         dt = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
                         time_str = dt.strftime('%I:%M %p')
                     except:
                         time_str = timestamp
             
-                    # Create the HTML card
+                    # Show animated donor card
                     card_html = f"""
                     <div style="
-                        background: linear-gradient(135deg, #fefefe, #e8f8ff);
+                        background: linear-gradient(135deg, #fefefe, #e0f7fa);
                         border-radius: 20px;
                         padding: 30px;
-                        box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+                        box-shadow: 0 6px 15px rgba(0,0,0,0.15);
                         text-align: center;
                         margin: 20px 0;
                         font-family: 'Helvetica', sans-serif;
@@ -374,19 +382,22 @@ if is_admin:
                     </div>
                     <style>
                         @keyframes fadeIn {{
-                            from {{ opacity: 0; transform: scale(0.95); }}
+                            from {{ opacity: 0; transform: scale(0.9); }}
                             to {{ opacity: 1; transform: scale(1); }}
                         }}
                     </style>
                     """
-                    # Display the card
+            
                     placeholder.markdown(card_html, unsafe_allow_html=True)
                     st.balloons()
                     st.toast(f"💖 New donation from {name}: ${amount}")
-                    
-                    # Show for 3 seconds
+            
+                    # Keep visible for 3 seconds
                     time.sleep(3)
                     placeholder.empty()
+            
+                    # Remember we already showed this donor
+                    st.session_state.last_shown_donor = latest_donor
             else:
                 st.info("No donations yet. Waiting for uploads...")
             
