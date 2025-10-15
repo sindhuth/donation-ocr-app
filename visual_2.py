@@ -376,9 +376,9 @@ if is_admin:
                         font-family: 'Helvetica', sans-serif;
                         animation: fadeIn 1s ease-in-out;
                     ">
-                        <h2>🎉 {name}</h2>
+                        <h2 style='color:white;'>{name}></h2>
                         <h3 style='color:#FFD700;'>Donated ${amount}</h3>
-                        <p style='color:gray;'Thank you for your generosity!</p>
+                        <p style='color:gray;'>Thank you for your generosity!</p>
                     </div>
                     <style>
                         @keyframes fadeIn {{
