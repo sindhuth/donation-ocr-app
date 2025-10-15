@@ -387,7 +387,6 @@ if is_admin:
                     # Show for 3 seconds
                     time.sleep(3)
                     placeholder.empty()
-                                placeholder.empty()
             else:
                 st.info("No donations yet. Waiting for uploads...")
             
