@@ -109,6 +109,9 @@ def extract_form_data(image_bytes):
                             "1. Full Name\n2. Phone\n3. Email\n4. Donation Amount (number only)\n"
                             "Return exactly this format:\n"
                             "Full Name: [name]\nPhone: [phone]\nEmail: [email]\nAmount: [number]"
+
+                            "1. Try to match names with common South Indian names."
+                             "2. Analyse cursive and capital letters carefully."
                         )},
                         {"type": "image_url", "image_url": {
                             "url": f"data:image/jpeg;base64,{base64_image}",
