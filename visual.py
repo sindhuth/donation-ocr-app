@@ -8,6 +8,7 @@ import sqlite3
 from datetime import datetime
 import threading
 import pandas as pd
+import time
 
 # Initialize OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -154,7 +155,7 @@ if is_admin:
     st.title("📊 Live Donation Dashboard")
     st.caption("🔒 Admin View")
     
-    # Stop button only (no auto-refresh checkbox needed)
+    # Stop button
     col1, col2 = st.columns([3, 1])
     with col2:
         stop_event = st.button("🛑 Stop Event", type="primary")
@@ -164,7 +165,7 @@ if is_admin:
         st.session_state.event_stopped = True
         st.rerun()
     
-    # Check if event is stopped
+    # Check if event is stopped - SHOW FINAL REPORT
     if st.session_state.get('event_stopped', False):
         st.title("📋 Final Donation Report")
         st.caption("Event has been stopped")
@@ -254,7 +255,7 @@ if is_admin:
                 )
             
             with col2:
-                # Excel download (requires openpyxl)
+                # Excel download
                 try:
                     buffer = io.BytesIO()
                     with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
@@ -282,8 +283,8 @@ if is_admin:
                 st.session_state.event_stopped = False
                 st.rerun()
     
+    # EVENT IS ACTIVE - SHOW LIVE DASHBOARD
     else:
-        # Normal dashboard view (when event is active)
         # Donation goal
         GOAL = 2000.0
         
@@ -294,7 +295,7 @@ if is_admin:
         total = 0
         if donors:
             for donor in donors:
-                amount_str = donor[3]  # amount is 4th column
+                amount_str = donor[3]
                 try:
                     total += float(amount_str) if amount_str and amount_str.replace('.', '').replace(',', '').isdigit() else 0
                 except:
@@ -302,52 +303,54 @@ if is_admin:
         
         # Calculate progress percentage
         progress_percentage = (total / GOAL) * 100
-        progress_percentage = min(progress_percentage, 100)  # Cap at 100%
+        progress_percentage = min(progress_percentage, 100)
         
         # Display goal and progress bar
         st.markdown(f"### 🎯 Fundraising Goal: ${GOAL:,.2f}")
         st.progress(progress_percentage / 100)
         st.markdown(f"**{progress_percentage:.1f}% Complete** — ${total:,.2f} of ${GOAL:,.2f} raised")
         
+        # Display metrics
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("💰 Total Raised", f"${total:,.2f}")
+        with col2:
+            st.metric("🎁 Total Donations", len(donors))
+        with col3:
+            remaining = max(GOAL - total, 0)
+            st.metric("🎯 Remaining", f"${remaining:,.2f}")
+        
+        # Celebration when goal is reached
+        if total >= GOAL:
+            st.success("🎉 **GOAL REACHED!** Thank you to all our donors!")
+        
+        st.markdown("---")
+        st.markdown("## 🙌 Live Donor Wall")
+        
+        # Show donor cards if there are any donors
         if donors:
-            # Display metrics
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                st.metric("💰 Total Raised", f"${total:,.2f}")
-            with col2:
-                st.metric("🎁 Total Donations", len(donors))
-            with col3:
-                remaining = max(GOAL - total, 0)
-                st.metric("🎯 Remaining", f"${remaining:,.2f}")
-            
-            # Celebration when goal is reached
-            if total >= GOAL:
-                st.success("🎉 **GOAL REACHED!** Thank you to all our donors!")
-            
-            st.markdown("---")
-            st.markdown("## 🙌 Live Donor Wall")
-            
-            # Initialize current donor index in session state
+            # Initialize current donor index
             if 'current_donor_index' not in st.session_state:
                 st.session_state.current_donor_index = 0
             
-            # Get current donor to display
+            # Get current donor
             current_index = st.session_state.current_donor_index % len(donors)
             donor = donors[current_index]
             
             name = donor[0] or "Anonymous"
             amount = donor[3] or "0"
             
-            # Create beautiful donor display with custom CSS
+            # Display beautiful donor card
             st.markdown("""
                 <style>
                 .donor-card {
                     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                     border-radius: 20px;
-                    padding: 60px;
+                    padding: 60px 40px;
                     text-align: center;
                     box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-                    margin: 40px 0;
+                    margin: 40px auto;
+                    max-width: 800px;
                 }
                 .donor-name {
                     color: white;
@@ -358,7 +361,7 @@ if is_admin:
                 }
                 .donor-amount {
                     color: #FFD700;
-                    font-size: 4em;
+                    font-size: 4.5em;
                     font-weight: bold;
                     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
                 }
@@ -367,6 +370,7 @@ if is_admin:
                     font-size: 2em;
                     margin-top: 20px;
                     font-style: italic;
+                    opacity: 0.9;
                 }
                 </style>
             """, unsafe_allow_html=True)
@@ -379,24 +383,18 @@ if is_admin:
                 </div>
             """, unsafe_allow_html=True)
             
-            # Show donor count indicator
-            st.markdown(f"<p style='text-align: center; color: #666;'>Donor {current_index + 1} of {len(donors)}</p>", unsafe_allow_html=True)
+            # Show progress indicator
+            st.markdown(
+                f"<p style='text-align: center; color: #666; font-size: 1.2em;'>Donor {current_index + 1} of {len(donors)}</p>", 
+                unsafe_allow_html=True
+            )
             
-            # Auto-advance to next donor after 3 seconds
-            import time
+            # Auto-advance after 3 seconds
             time.sleep(3)
             st.session_state.current_donor_index += 1
             st.rerun()
-            
-            # Clear button
-            st.markdown("---")
-            if st.button("🗑️ Clear All Donors"):
-                clear_all_donors()
-                st.rerun()
         else:
-            st.info("No donations yet. Waiting for uploads...")
-        
-        # Remove auto-refresh checkbox since we're always cycling through donors
+            st.info("💤 No donations yet. Waiting for uploads...")
 
 # ==================== UPLOAD STATION MODE ====================
 else:
