@@ -367,7 +367,7 @@ if is_admin:
                     # Show animated donor card
                     card_html = f"""
                     <div style="
-                        background: linear-gradient(135deg, #fefefe, #e0f7fa);
+                        background: linear-gradient(135deg, #667eea, #764ba2 100%);
                         border-radius: 20px;
                         padding: 30px;
                         box-shadow: 0 6px 15px rgba(0,0,0,0.15);
@@ -377,8 +377,8 @@ if is_admin:
                         animation: fadeIn 1s ease-in-out;
                     ">
                         <h2>🎉 {name}</h2>
-                        <h3 style='color:#007B83;'>Donated ${amount}</h3>
-                        <p style='color:gray;'>🕒 {time_str}</p>
+                        <h3 style='color:#FFD700;'>Donated ${amount}</h3>
+                        <p style='color:gray;'Thank you for your generosity!</p>
                     </div>
                     <style>
                         @keyframes fadeIn {{
