@@ -216,7 +216,7 @@ if is_admin:
             except:
                 time_str = ""
             
-            with st.expander(f"🎁 **{name}** — ${amount} {f'*({time_str})*' if time_str else ''}"):
+            with st.expander(f"🎁 **{name}** — ${amount}): 
                 if phone:
                     st.text(f"📞 {phone}")
                 if email:
