@@ -5,3 +5,4 @@ pillow
 pandas
 python-dotenv
 requests
+streamlit-extras
