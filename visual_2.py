@@ -337,66 +337,66 @@ if is_admin:
         # num_donors = len(donors)
         # current_index = st.session_state.current_donor_index % num_donors
         # donor = donors[current_index]
-
-        for donor in donors:
-            name = donor[0] or "Anonymous"
-            amount = donor[3] or "0"
-            
-            # Display beautiful donor card
-            st.markdown("""
-                <style>
-                .donor-card {
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                    border-radius: 20px;
-                    padding: 60px 40px;
-                    text-align: center;
-                    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-                    margin: 40px auto;
-                    max-width: 800px;
-                }
-                .donor-name {
-                    color: white;
-                    font-size: 3.5em;
-                    font-weight: bold;
-                    margin-bottom: 20px;
-                    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-                }
-                .donor-amount {
-                    color: #FFD700;
-                    font-size: 4.5em;
-                    font-weight: bold;
-                    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-                }
-                .thank-you {
-                    color: white;
-                    font-size: 2em;
-                    margin-top: 20px;
-                    font-style: italic;
-                    opacity: 0.9;
-                }
-                </style>
-            """, unsafe_allow_html=True)
-            
-            st.markdown(f"""
-                <div class="donor-card">
-                    <div class="donor-name">🎁 {name}</div>
-                    <div class="donor-amount">${amount}</div>
-                    <div class="thank-you">Thank you for your generosity!</div>
-                </div>
+        if donors:
+            for donor in donors:
+                name = donor[0] or "Anonymous"
+                amount = donor[3] or "0"
+                
+                # Display beautiful donor card
+                st.markdown("""
+                    <style>
+                    .donor-card {
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        border-radius: 20px;
+                        padding: 60px 40px;
+                        text-align: center;
+                        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+                        margin: 40px auto;
+                        max-width: 800px;
+                    }
+                    .donor-name {
+                        color: white;
+                        font-size: 3.5em;
+                        font-weight: bold;
+                        margin-bottom: 20px;
+                        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+                    }
+                    .donor-amount {
+                        color: #FFD700;
+                        font-size: 4.5em;
+                        font-weight: bold;
+                        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+                    }
+                    .thank-you {
+                        color: white;
+                        font-size: 2em;
+                        margin-top: 20px;
+                        font-style: italic;
+                        opacity: 0.9;
+                    }
+                    </style>
                 """, unsafe_allow_html=True)
-            
-            # Show progress indicator
-            st.markdown(
-                f"<p style='text-align: center; color: #666; font-size: 1.2em;'>Donor {current_index + 1} of {num_donors}</p>", 
-                unsafe_allow_html=True
-            )
-            
-            # Auto-advance after 3 seconds
-            time.sleep(3)
-            st.session_state.current_donor_index += 1
-            st.rerun()
-        # else:
-            # st.info("💤 No donations yet. Waiting for uploads...")
+                
+                st.markdown(f"""
+                    <div class="donor-card">
+                        <div class="donor-name">🎁 {name}</div>
+                        <div class="donor-amount">${amount}</div>
+                        <div class="thank-you">Thank you for your generosity!</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                
+                # Show progress indicator
+                st.markdown(
+                    f"<p style='text-align: center; color: #666; font-size: 1.2em;'>Donor {current_index + 1} of {num_donors}</p>", 
+                    unsafe_allow_html=True
+                )
+                
+                # Auto-advance after 3 seconds
+                time.sleep(3)
+                st.session_state.current_donor_index += 1
+                st.rerun()
+        else:
+            st.info("💤 No donations yet. Waiting for uploads...")
 
 # ==================== UPLOAD STATION MODE ====================
 else:
