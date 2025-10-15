@@ -99,7 +99,7 @@ def extract_form_data(image_bytes):
     try:
         base64_image = encode_image(image_bytes)
         response = client.chat.completions.create(
-            model="gpt-4-turbo",
+            model="gpt-4v",
             messages=[
                 {
                     "role": "user",
