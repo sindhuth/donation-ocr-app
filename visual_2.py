@@ -328,7 +328,7 @@ if is_admin:
         st.markdown("## 🙌 Live Donor Wall")
         
         # Show donor cards if there are any donors
-        if len(donors) > 0:
+        # if len(donors) > 0:
             # Initialize current donor index
             if 'current_donor_index' not in st.session_state:
                 st.session_state.current_donor_index = 0
@@ -394,8 +394,8 @@ if is_admin:
             time.sleep(3)
             st.session_state.current_donor_index += 1
             st.rerun()
-        else:
-            st.info("💤 No donations yet. Waiting for uploads...")
+        # else:
+            # st.info("💤 No donations yet. Waiting for uploads...")
 
 # ==================== UPLOAD STATION MODE ====================
 else:
