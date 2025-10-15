@@ -9,6 +9,7 @@ from datetime import datetime
 import threading
 import pandas as pd
 import time
+from streamlit_extras.card import card
 
 # Initialize OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -155,9 +156,11 @@ if is_admin:
     st.title("📊 Live Donation Dashboard")
     st.caption("🔒 Admin View")
     
-    # Stop button
-    col1, col2 = st.columns([3, 1])
+    # Auto-refresh toggle and Stop button
+    col1, col2, col3 = st.columns([2, 1, 1])
     with col2:
+        auto_refresh = st.checkbox("Auto-refresh", value=True)
+    with col3:
         stop_event = st.button("🛑 Stop Event", type="primary")
     
     # Handle stop event
@@ -165,7 +168,7 @@ if is_admin:
         st.session_state.event_stopped = True
         st.rerun()
     
-    # Check if event is stopped - SHOW FINAL REPORT
+    # Check if event is stopped
     if st.session_state.get('event_stopped', False):
         st.title("📋 Final Donation Report")
         st.caption("Event has been stopped")
@@ -255,7 +258,7 @@ if is_admin:
                 )
             
             with col2:
-                # Excel download
+                # Excel download (requires openpyxl)
                 try:
                     buffer = io.BytesIO()
                     with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
@@ -283,8 +286,8 @@ if is_admin:
                 st.session_state.event_stopped = False
                 st.rerun()
     
-    # EVENT IS ACTIVE - SHOW LIVE DASHBOARD
     else:
+        # Normal dashboard view (when event is active)
         # Donation goal
         GOAL = 2000.0
         
@@ -295,7 +298,7 @@ if is_admin:
         total = 0
         if donors:
             for donor in donors:
-                amount_str = donor[3]
+                amount_str = donor[3]  # amount is 4th column
                 try:
                     total += float(amount_str) if amount_str and amount_str.replace('.', '').replace(',', '').isdigit() else 0
                 except:
@@ -303,100 +306,86 @@ if is_admin:
         
         # Calculate progress percentage
         progress_percentage = (total / GOAL) * 100
-        progress_percentage = min(progress_percentage, 100)
+        progress_percentage = min(progress_percentage, 100)  # Cap at 100%
         
         # Display goal and progress bar
         st.markdown(f"### 🎯 Fundraising Goal: ${GOAL:,.2f}")
         st.progress(progress_percentage / 100)
         st.markdown(f"**{progress_percentage:.1f}% Complete** — ${total:,.2f} of ${GOAL:,.2f} raised")
         
-        # Display metrics
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.metric("💰 Total Raised", f"${total:,.2f}")
-        with col2:
-            st.metric("🎁 Total Donations", len(donors))
-        with col3:
-            remaining = max(GOAL - total, 0)
-            st.metric("🎯 Remaining", f"${remaining:,.2f}")
-        
-        # Celebration when goal is reached
-        if total >= GOAL:
-            st.success("🎉 **GOAL REACHED!** Thank you to all our donors!")
-        
-        st.markdown("---")
-        st.markdown("## 🙌 Live Donor Wall")
-        
-        # # Show donor cards if there are any donors
-        # # if len(donors) > 0:
-        #     # Initialize current donor index
-        # if 'current_donor_index' not in st.session_state:
-        #     st.session_state.current_donor_index = 0
-            
-        #     # Get current donor (safely handle index)
-        # num_donors = len(donors)
-        # current_index = st.session_state.current_donor_index % num_donors
-        # donor = donors[current_index]
         if donors:
-            for donor in donors:
-                name = donor[0] or "Anonymous"
-                amount = donor[3] or "0"
-                
-                # Display beautiful donor card
-                st.markdown("""
-                    <style>
-                    .donor-card {
-                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                        border-radius: 20px;
-                        padding: 60px 40px;
-                        text-align: center;
-                        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-                        margin: 40px auto;
-                        max-width: 800px;
-                    }
-                    .donor-name {
-                        color: white;
-                        font-size: 3.5em;
-                        font-weight: bold;
-                        margin-bottom: 20px;
-                        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-                    }
-                    .donor-amount {
-                        color: #FFD700;
-                        font-size: 4.5em;
-                        font-weight: bold;
-                        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-                    }
-                    .thank-you {
-                        color: white;
-                        font-size: 2em;
-                        margin-top: 20px;
-                        font-style: italic;
-                        opacity: 0.9;
-                    }
-                    </style>
-                """, unsafe_allow_html=True)
-                
-                st.markdown(f"""
-                    <div class="donor-card">
-                        <div class="donor-name">🎁 {name}</div>
-                        <div class="donor-amount">${amount}</div>
-                        <div class="thank-you">Thank you for your generosity!</div>
-                    </div>
-                    """, unsafe_allow_html=True)
-                
-                # Show progress indicator
-                st.markdown(
-                    f"<p style='text-align: center; color: #666; font-size: 1.2em;'>Donor {current_index + 1} of {num_donors}</p>", 
-                    unsafe_allow_html=True
+            # Display metrics
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("💰 Total Raised", f"${total:,.2f}")
+            with col2:
+                st.metric("🎁 Total Donations", len(donors))
+            with col3:
+                remaining = max(GOAL - total, 0)
+                st.metric("🎯 Remaining", f"${remaining:,.2f}")
+            
+            # Celebration when goal is reached
+            if total >= GOAL:
+                st.success("🎉 **GOAL REACHED!** Thank you to all our donors!")
+            
+            st.markdown("---")
+            st.markdown("## 🙌 Live Donor Wall")
+            
+            # Display donors
+            st.markdown("## 🙌 Live Donor Wall")
+    st.caption("Newest donations appear below — one at a time 💖")
+    
+    # Create a container for the card
+    placeholder = st.empty()
+    
+    if donors:
+        # Sort donors newest first
+        donors = sorted(donors, key=lambda x: x[4], reverse=True)
+        
+        for donor in donors:
+            name = donor[0] or "Anonymous"
+            phone = donor[1] or ""
+            email = donor[2] or ""
+            amount = donor[3] or "0"
+            timestamp = donor[4]
+    
+            # Format timestamp nicely
+            try:
+                dt = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
+                time_str = dt.strftime('%I:%M %p')
+            except:
+                time_str = timestamp
+    
+            # Show animated card
+            with placeholder.container():
+                card(
+                    title=f"🎁 {name}",
+                    content=f"**Donated:** ${amount}\n\n🕒 *{time_str}*",
+                    image="https://cdn-icons-png.flaticon.com/512/1998/1998671.png",  # decorative icon
+                    key=name + amount + time_str,
                 )
-                
-                # Auto-advance after 3 seconds
-                time.sleep(3)
-                st.session_state.current_donor_index += 1
+                st.balloons()  # celebration each time
+                st.toast(f"💖 New donation from {name}: ${amount}")
+            
+            # Keep each card for 3 seconds
+            time.sleep(3)
+            placeholder.empty()
+    else:
+        st.info("No donations yet. Waiting for uploads...")
+            
+            # Clear button
+            st.markdown("---")
+            if st.button("🗑️ Clear All Donors"):
+                clear_all_donors()
                 st.rerun()
         else:
-            st.info("💤 No donations yet. Waiting for uploads...")
+            st.info("No donations yet. Waiting for uploads...")
+        
+        # Auto-refresh every 5 seconds if enabled
+        if auto_refresh:
+            import time
+            time.sleep(5)
+            st.rerun()
 
 # ==================== UPLOAD STATION MODE ====================
 else:
