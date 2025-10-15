@@ -333,45 +333,45 @@ if is_admin:
             
             # Display donors
             st.markdown("## 🙌 Live Donor Wall")
-    st.caption("Newest donations appear below — one at a time 💖")
-    
-    # Create a container for the card
-    placeholder = st.empty()
-    
-    if donors:
-        # Sort donors newest first
-        donors = sorted(donors, key=lambda x: x[4], reverse=True)
-        
-        for donor in donors:
-            name = donor[0] or "Anonymous"
-            phone = donor[1] or ""
-            email = donor[2] or ""
-            amount = donor[3] or "0"
-            timestamp = donor[4]
-    
-            # Format timestamp nicely
-            try:
-                dt = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
-                time_str = dt.strftime('%I:%M %p')
-            except:
-                time_str = timestamp
-    
-            # Show animated card
-            with placeholder.container():
-                card(
-                    title=f"🎁 {name}",
-                    content=f"**Donated:** ${amount}\n\n🕒 *{time_str}*",
-                    image="https://cdn-icons-png.flaticon.com/512/1998/1998671.png",  # decorative icon
-                    key=name + amount + time_str,
-                )
-                st.balloons()  # celebration each time
-                st.toast(f"💖 New donation from {name}: ${amount}")
+            st.caption("Newest donations appear below — one at a time 💖")
             
-            # Keep each card for 3 seconds
-            time.sleep(3)
-            placeholder.empty()
-    else:
-        st.info("No donations yet. Waiting for uploads...")
+            # Create a container for the card
+            placeholder = st.empty()
+            
+            if donors:
+                # Sort donors newest first
+                donors = sorted(donors, key=lambda x: x[4], reverse=True)
+                
+                for donor in donors:
+                    name = donor[0] or "Anonymous"
+                    phone = donor[1] or ""
+                    email = donor[2] or ""
+                    amount = donor[3] or "0"
+                    timestamp = donor[4]
+            
+                    # Format timestamp nicely
+                    try:
+                        dt = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
+                        time_str = dt.strftime('%I:%M %p')
+                    except:
+                        time_str = timestamp
+            
+                    # Show animated card
+                    with placeholder.container():
+                        card(
+                            title=f"🎁 {name}",
+                            content=f"**Donated:** ${amount}\n\n🕒 *{time_str}*",
+                            image="https://cdn-icons-png.flaticon.com/512/1998/1998671.png",  # decorative icon
+                            key=name + amount + time_str,
+                        )
+                        st.balloons()  # celebration each time
+                        st.toast(f"💖 New donation from {name}: ${amount}")
+                    
+                    # Keep each card for 3 seconds
+                    time.sleep(3)
+                    placeholder.empty()
+            else:
+                st.info("No donations yet. Waiting for uploads...")
             
             # Clear button
             st.markdown("---")
