@@ -53,7 +53,8 @@ def extract_form_data(image_bytes):
         return None
 
 # --- Main Input Section ---
-
+if "donors" not in st.session_state:
+    st.session_state["donors"] = []
 st.title("📸 Live Donation Capture")
 
 st.write("Take a photo of a donation form and extract the donor’s name.")
@@ -69,10 +70,10 @@ if photo:
     # 3️⃣ Convert to base64
     buffered = io.BytesIO()
     image.save(buffered, format="JPEG")
-    
-    with st.spinner("Analyzing photo..."):
-        image_bytes = image.read()
-        result = extract_form_data(image_bytes)
+    image_bytes = buffered.getvalue()  # ✅ Get bytes from the buffer
+
+with st.spinner("Analyzing photo..."):
+    result = extract_form_data(image_bytes)
     if result:
         # Add to donor list
         st.session_state["donors"].append(result)
