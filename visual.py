@@ -332,59 +332,61 @@ if is_admin:
                 st.session_state.current_donor_index = 0
             
             # Get current donor to display
-            if donors:
-                current_index = st.session_state.current_donor_index % len(donors)
-                donor = donors[current_index]
-                
-                name = donor[0] or "Anonymous"
-                amount = donor[3] or "0"
-                
-                # Create beautiful donor display
-                st.markdown("""
-                    <style>
-                    .donor-card {
-                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                        border-radius: 20px;
-                        padding: 60px;
-                        text-align: center;
-                        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-                        margin: 40px 0;
-                    }
-                    .donor-name {
-                        color: white;
-                        font-size: 3.5em;
-                        font-weight: bold;
-                        margin-bottom: 20px;
-                        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-                    }
-                    .donor-amount {
-                        color: #FFD700;
-                        font-size: 4em;
-                        font-weight: bold;
-                        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-                    }
-                    .thank-you {
-                        color: white;
-                        font-size: 2em;
-                        margin-top: 20px;
-                        font-style: italic;
-                    }
-                    </style>
-                """, unsafe_allow_html=True)
-                
-                st.markdown(f"""
-                    <div class="donor-card">
-                        <div class="donor-name">🎁 {name}</div>
-                        <div class="donor-amount">${amount}</div>
-                        <div class="thank-you">Thank you for your generosity!</div>
-                    </div>
-                """, unsafe_allow_html=True)
-                
-                # Auto-advance to next donor after 3 seconds
-                import time
-                time.sleep(3)
-                st.session_state.current_donor_index += 1
-                st.rerun()
+            current_index = st.session_state.current_donor_index % len(donors)
+            donor = donors[current_index]
+            
+            name = donor[0] or "Anonymous"
+            amount = donor[3] or "0"
+            
+            # Create beautiful donor display with custom CSS
+            st.markdown("""
+                <style>
+                .donor-card {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    border-radius: 20px;
+                    padding: 60px;
+                    text-align: center;
+                    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+                    margin: 40px 0;
+                }
+                .donor-name {
+                    color: white;
+                    font-size: 3.5em;
+                    font-weight: bold;
+                    margin-bottom: 20px;
+                    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+                }
+                .donor-amount {
+                    color: #FFD700;
+                    font-size: 4em;
+                    font-weight: bold;
+                    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+                }
+                .thank-you {
+                    color: white;
+                    font-size: 2em;
+                    margin-top: 20px;
+                    font-style: italic;
+                }
+                </style>
+            """, unsafe_allow_html=True)
+            
+            st.markdown(f"""
+                <div class="donor-card">
+                    <div class="donor-name">🎁 {name}</div>
+                    <div class="donor-amount">${amount}</div>
+                    <div class="thank-you">Thank you for your generosity!</div>
+                </div>
+            """, unsafe_allow_html=True)
+            
+            # Show donor count indicator
+            st.markdown(f"<p style='text-align: center; color: #666;'>Donor {current_index + 1} of {len(donors)}</p>", unsafe_allow_html=True)
+            
+            # Auto-advance to next donor after 3 seconds
+            import time
+            time.sleep(3)
+            st.session_state.current_donor_index += 1
+            st.rerun()
             
             # Clear button
             st.markdown("---")
