@@ -7,6 +7,7 @@ import os
 import sqlite3
 from datetime import datetime
 import threading
+import pandas as pd
 
 # Initialize OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -160,9 +161,6 @@ if is_admin:
     with col3:
         stop_event = st.button("🛑 Stop Event", type="primary")
     
-    # Donation goal
-    GOAL = 2000.0
-    
     # Handle stop event
     if stop_event:
         st.session_state.event_stopped = True
@@ -200,7 +198,6 @@ if is_admin:
             st.markdown("### 📋 All Donations")
             
             # Prepare data for table
-            import pandas as pd
             table_data = []
             for idx, donor in enumerate(donors, 1):
                 name = donor[0] or "Anonymous"
@@ -286,83 +283,86 @@ if is_admin:
             if st.button("🔄 Start New Event"):
                 st.session_state.event_stopped = False
                 st.rerun()
-        
-        return  # Exit early to show only the report
     
-    # Normal dashboard view (when event is active)
-    donors = get_all_donors()
-    
-    # Calculate total donations
-    total = 0
-    if donors:
-        for donor in donors:
-            amount_str = donor[3]  # amount is 4th column
-            try:
-                total += float(amount_str) if amount_str and amount_str.replace('.', '').replace(',', '').isdigit() else 0
-            except:
-                pass
-    
-    # Calculate progress percentage
-    progress_percentage = (total / GOAL) * 100
-    progress_percentage = min(progress_percentage, 100)  # Cap at 100%
-    
-    # Display goal and progress bar
-    st.markdown(f"### 🎯 Fundraising Goal: ${GOAL:,.2f}")
-    st.progress(progress_percentage / 100)
-    st.markdown(f"**{progress_percentage:.1f}% Complete** — ${total:,.2f} of ${GOAL:,.2f} raised")
-    
-    if donors:
-        # Display metrics
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            st.metric("💰 Total Raised", f"${total:,.2f}")
-        with col2:
-            st.metric("🎁 Total Donations", len(donors))
-        with col3:
-            remaining = max(GOAL - total, 0)
-            st.metric("🎯 Remaining", f"${remaining:,.2f}")
-        
-        # Celebration when goal is reached
-        if total >= GOAL:
-            st.success("🎉 **GOAL REACHED!** Thank you to all our donors!")
-        
-        st.markdown("---")
-        st.markdown("## 🙌 Live Donor Wall")
-        
-        # Display donors
-        for donor in donors:
-            name = donor[0] or "Anonymous"
-            phone = donor[1] or ""
-            email = donor[2] or ""
-            amount = donor[3] or "0"
-            timestamp = donor[4]
-            
-            # Parse timestamp for display
-            try:
-                dt = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
-                time_str = dt.strftime('%I:%M %p')
-            except:
-                time_str = ""
-            
-            with st.expander(f"🎁 **{name}** — ${amount} {f'*({time_str})*' if time_str else ''}"):
-                if phone:
-                    st.text(f"📞 {phone}")
-                if email:
-                    st.text(f"📧 {email}")
-        
-        # Clear button
-        st.markdown("---")
-        if st.button("🗑️ Clear All Donors"):
-            clear_all_donors()
-            st.rerun()
     else:
-        st.info("No donations yet. Waiting for uploads...")
-    
-    # Auto-refresh every 5 seconds if enabled
-    if auto_refresh:
-        import time
-        time.sleep(5)
-        st.rerun()
+        # Normal dashboard view (when event is active)
+        # Donation goal
+        GOAL = 2000.0
+        
+        # Get all donors from database
+        donors = get_all_donors()
+        
+        # Calculate total donations
+        total = 0
+        if donors:
+            for donor in donors:
+                amount_str = donor[3]  # amount is 4th column
+                try:
+                    total += float(amount_str) if amount_str and amount_str.replace('.', '').replace(',', '').isdigit() else 0
+                except:
+                    pass
+        
+        # Calculate progress percentage
+        progress_percentage = (total / GOAL) * 100
+        progress_percentage = min(progress_percentage, 100)  # Cap at 100%
+        
+        # Display goal and progress bar
+        st.markdown(f"### 🎯 Fundraising Goal: ${GOAL:,.2f}")
+        st.progress(progress_percentage / 100)
+        st.markdown(f"**{progress_percentage:.1f}% Complete** — ${total:,.2f} of ${GOAL:,.2f} raised")
+        
+        if donors:
+            # Display metrics
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("💰 Total Raised", f"${total:,.2f}")
+            with col2:
+                st.metric("🎁 Total Donations", len(donors))
+            with col3:
+                remaining = max(GOAL - total, 0)
+                st.metric("🎯 Remaining", f"${remaining:,.2f}")
+            
+            # Celebration when goal is reached
+            if total >= GOAL:
+                st.success("🎉 **GOAL REACHED!** Thank you to all our donors!")
+            
+            st.markdown("---")
+            st.markdown("## 🙌 Live Donor Wall")
+            
+            # Display donors
+            for donor in donors:
+                name = donor[0] or "Anonymous"
+                phone = donor[1] or ""
+                email = donor[2] or ""
+                amount = donor[3] or "0"
+                timestamp = donor[4]
+                
+                # Parse timestamp for display
+                try:
+                    dt = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
+                    time_str = dt.strftime('%I:%M %p')
+                except:
+                    time_str = ""
+                
+                with st.expander(f"🎁 **{name}** — ${amount} {f'*({time_str})*' if time_str else ''}"):
+                    if phone:
+                        st.text(f"📞 {phone}")
+                    if email:
+                        st.text(f"📧 {email}")
+            
+            # Clear button
+            st.markdown("---")
+            if st.button("🗑️ Clear All Donors"):
+                clear_all_donors()
+                st.rerun()
+        else:
+            st.info("No donations yet. Waiting for uploads...")
+        
+        # Auto-refresh every 5 seconds if enabled
+        if auto_refresh:
+            import time
+            time.sleep(5)
+            st.rerun()
 
 # ==================== UPLOAD STATION MODE ====================
 else:
