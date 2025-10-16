@@ -626,8 +626,6 @@ else:
         with st.spinner("🤖 Agent 1: Analyzing photo with Vision AI..."):
             extracted = extract_with_vision_agent(image_bytes)
             
-            if extracted:
-                st.success(f"✅ Detected - Name: {extracted.get('name', 'N/A')}, Amount: ${extracted.get('amount', '0')}")
         
         if extracted:
             with st.spinner("🤖 Agent 2: Processing and validating data..."):
