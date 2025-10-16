@@ -640,12 +640,8 @@ else:
                 st.success("✅ Form uploaded successfully!")
                 st.balloons()
                 
-                # Show extracted info
-                st.markdown("### 📋 Extracted Information:")
-                st.markdown(f"**Name:** {processed['name'] or 'Not detected'}")
-                st.markdown(f"**Amount:** ${processed['amount'] or '0'}")
                 
-                st.info("📤 Sent to editor for review and confirmation.")
+                st.info("📤 Your donation has been sent for review and will appear on the dashboard shortly.")
                 
                 # Don't auto-rerun, let user take another photo if needed
         else:
