@@ -495,17 +495,21 @@ if user_role == 'admin':
                 "></div>
                 '''
             
-            # Generate overflow coins when at 100%
+            # Generate overflow coins when at 100% - arranged in triangle
             overflow_html = ""
             if progress_percentage >= 100:
+                # Triangle arrangement: rows of 7, 6, 5, 4, 3 coins (25 total)
                 overflow_positions = [
-                    (60, -30, 28), (100, -25, 26), (140, -32, 24),
-                    (40, -50, 30), (85, -48, 27), (130, -45, 25), (175, -47, 26),
-                    (50, -70, 29), (95, -68, 28), (140, -72, 26), (185, -69, 27),
-                    (30, -90, 25), (75, -88, 30), (120, -85, 28), (165, -92, 26),
-                    (45, -110, 27), (90, -108, 29), (135, -105, 25), (180, -112, 28),
-                    (60, -130, 26), (105, -128, 30), (150, -125, 27), (195, -132, 25),
-                    (75, -148, 28), (125, -145, 26)
+                    # Row 1 (bottom, 7 coins)
+                    (50, -25, 28), (80, -25, 28), (110, -25, 28), (140, -25, 28), (170, -25, 28), (200, -25, 28), (230, -25, 28),
+                    # Row 2 (6 coins)
+                    (65, -50, 27), (95, -50, 27), (125, -50, 27), (155, -50, 27), (185, -50, 27), (215, -50, 27),
+                    # Row 3 (5 coins)
+                    (80, -75, 26), (110, -75, 26), (140, -75, 26), (170, -75, 26), (200, -75, 26),
+                    # Row 4 (4 coins)
+                    (95, -100, 25), (125, -100, 25), (155, -100, 25), (185, -100, 25),
+                    # Row 5 (top, 3 coins)
+                    (110, -125, 24), (140, -125, 24), (170, -125, 24)
                 ]
                 
                 for idx, (left, top, size) in enumerate(overflow_positions):
@@ -568,18 +572,18 @@ if user_role == 'admin':
                         width: 200px;
                         height: 200px;
                         background: linear-gradient(180deg, 
-                            #8B4513 0%, 
-                            #654321 20%,
-                            #8B4513 40%,
-                            #A0522D 60%,
-                            #654321 100%);
+                            rgba(139, 69, 19, 0.5) 0%, 
+                            rgba(101, 67, 33, 0.6) 20%,
+                            rgba(139, 69, 19, 0.5) 40%,
+                            rgba(160, 82, 45, 0.55) 60%,
+                            rgba(101, 67, 33, 0.6) 100%);
                         border-radius: 0 0 90px 90px;
                         position: relative;
                         box-shadow: 
-                            inset -20px 0 40px rgba(0,0,0,0.4),
-                            inset 20px 0 40px rgba(139,69,19,0.3),
+                            inset -20px 0 40px rgba(0,0,0,0.3),
+                            inset 20px 0 40px rgba(139,69,19,0.2),
                             0 20px 40px rgba(0,0,0,0.5);
-                        border: 3px solid #654321;
+                        border: 3px solid rgba(101, 67, 33, 0.8);
                         z-index: 10;
                     }}
                     .pot-rim {{
@@ -588,7 +592,7 @@ if user_role == 'admin':
                         left: -10px;
                         width: 220px;
                         height: 30px;
-                        background: linear-gradient(180deg, #A0522D 0%, #654321 100%);
+                        background: linear-gradient(180deg, rgba(160, 82, 45, 0.7) 0%, rgba(101, 67, 33, 0.8) 100%);
                         border-radius: 15px;
                         box-shadow: 
                             0 5px 10px rgba(0,0,0,0.5),
@@ -601,7 +605,7 @@ if user_role == 'admin':
                         top: 30px;
                         width: 30px;
                         height: 60px;
-                        border: 8px solid #654321;
+                        border: 8px solid rgba(101, 67, 33, 0.8);
                         border-right: none;
                         border-radius: 40px 0 0 40px;
                         box-shadow: -5px 5px 10px rgba(0,0,0,0.4);
@@ -612,7 +616,7 @@ if user_role == 'admin':
                         top: 30px;
                         width: 30px;
                         height: 60px;
-                        border: 8px solid #654321;
+                        border: 8px solid rgba(101, 67, 33, 0.8);
                         border-left: none;
                         border-radius: 0 40px 40px 0;
                         box-shadow: 5px 5px 10px rgba(0,0,0,0.4);
@@ -624,7 +628,7 @@ if user_role == 'admin':
                         right: 10px;
                         bottom: 10px;
                         border-radius: 0 0 80px 80px;
-                        box-shadow: inset 0 20px 40px rgba(0,0,0,0.6);
+                        box-shadow: inset 0 20px 40px rgba(0,0,0,0.4);
                         pointer-events: none;
                     }}
                     @keyframes coinPop {{
@@ -831,14 +835,11 @@ else:
         image_bytes = buffered.getvalue()
         
         # Extract with agents
-        with st.spinner("🤖 Agent 1: Analyzing photo with Vision AI..."):
+        with st.spinner("🤖 Analyzing photo with AI Vision..."):
             extracted = extract_with_vision_agent(image_bytes)
-            
-            if extracted:
-                st.success(f"✅ Detected - Name: {extracted.get('name', 'N/A')}, Amount: ${extracted.get('amount', '0')}")
         
         if extracted:
-            with st.spinner("🤖 Agent 2: Processing and validating data..."):
+            with st.spinner("🤖 Processing and validating data..."):
                 processed = process_with_data_agent(extracted)
             
             if processed:
@@ -848,17 +849,11 @@ else:
                 st.success("✅ Form uploaded successfully!")
                 st.balloons()
                 
-                # Show extracted info
-                st.markdown("### 📋 Extracted Information:")
-                st.markdown(f"**Name:** {processed['name'] or 'Not detected'}")
-                st.markdown(f"**Amount:** ${processed['amount'] or '0'}")
-                
-                st.info("📤 Sent to editor for review and confirmation.")
+                st.info("📤 Your donation has been sent for review and will appear on the dashboard shortly.")
                 
                 # Don't auto-rerun, let user take another photo if needed
         else:
             st.error("Could not extract information. Please try again.")
-
 
 # import streamlit as st
 # import streamlit.components.v1 as components
