@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 from phi.agent import Agent
 from phi.model.openai import OpenAIChat
 from openai import OpenAI
@@ -464,31 +465,47 @@ if user_role == 'admin':
         with col_right:
             # Realistic pot filling with gold coins
             fill_height = int(progress_percentage * 2)  # Scale to 200px max height
-            num_coins = int(progress_percentage / 10)  # More coins as we progress
             
             pot_html = f"""
-            <div style="display: flex; justify-content: center; align-items: flex-end; height: 250px; position: relative;">
-                <!-- Gold coins filling up -->
-                <div style="
-                    position: absolute;
-                    bottom: 50px;
-                    width: 180px;
-                    height: {fill_height}px;
-                    background: linear-gradient(180deg, 
-                        #FFD700 0%, 
-                        #FFA500 20%,
-                        #FFD700 40%,
-                        #DAA520 60%,
-                        #FFD700 80%,
-                        #FFA500 100%);
-                    border-radius: 0 0 80px 80px;
-                    box-shadow: inset 0 -10px 20px rgba(0,0,0,0.2),
-                                inset 0 10px 20px rgba(255,255,255,0.3);
-                    overflow: hidden;
-                    transition: height 0.5s ease;
-                ">
-                    <!-- Animated coin sparkles -->
-                    <div style="
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <style>
+                    body {{
+                        margin: 0;
+                        padding: 0;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 300px;
+                        background: transparent;
+                    }}
+                    .container {{
+                        display: flex;
+                        justify-content: center;
+                        align-items: flex-end;
+                        height: 250px;
+                        position: relative;
+                    }}
+                    .coins {{
+                        position: absolute;
+                        bottom: 50px;
+                        width: 180px;
+                        height: {fill_height}px;
+                        background: linear-gradient(180deg, 
+                            #FFD700 0%, 
+                            #FFA500 20%,
+                            #FFD700 40%,
+                            #DAA520 60%,
+                            #FFD700 80%,
+                            #FFA500 100%);
+                        border-radius: 0 0 80px 80px;
+                        box-shadow: inset 0 -10px 20px rgba(0,0,0,0.2),
+                                    inset 0 10px 20px rgba(255,255,255,0.3);
+                        overflow: hidden;
+                        transition: height 0.5s ease;
+                    }}
+                    .sparkles {{
                         width: 100%;
                         height: 100%;
                         background-image: 
@@ -498,29 +515,25 @@ if user_role == 'admin':
                             radial-gradient(circle at 80% 20%, rgba(255,255,255,0.3) 2px, transparent 2px);
                         background-size: 50px 50px;
                         animation: shimmer 3s linear infinite;
-                    "></div>
-                </div>
-                
-                <!-- Realistic pot -->
-                <div style="
-                    width: 200px;
-                    height: 200px;
-                    background: linear-gradient(180deg, 
-                        #8B4513 0%, 
-                        #654321 20%,
-                        #8B4513 40%,
-                        #A0522D 60%,
-                        #654321 100%);
-                    border-radius: 0 0 90px 90px;
-                    position: relative;
-                    box-shadow: 
-                        inset -20px 0 40px rgba(0,0,0,0.4),
-                        inset 20px 0 40px rgba(139,69,19,0.3),
-                        0 20px 40px rgba(0,0,0,0.5);
-                    border: 3px solid #654321;
-                ">
-                    <!-- Pot rim -->
-                    <div style="
+                    }}
+                    .pot {{
+                        width: 200px;
+                        height: 200px;
+                        background: linear-gradient(180deg, 
+                            #8B4513 0%, 
+                            #654321 20%,
+                            #8B4513 40%,
+                            #A0522D 60%,
+                            #654321 100%);
+                        border-radius: 0 0 90px 90px;
+                        position: relative;
+                        box-shadow: 
+                            inset -20px 0 40px rgba(0,0,0,0.4),
+                            inset 20px 0 40px rgba(139,69,19,0.3),
+                            0 20px 40px rgba(0,0,0,0.5);
+                        border: 3px solid #654321;
+                    }}
+                    .pot-rim {{
                         position: absolute;
                         top: -15px;
                         left: -10px;
@@ -531,10 +544,8 @@ if user_role == 'admin':
                         box-shadow: 
                             0 5px 10px rgba(0,0,0,0.5),
                             inset 0 -5px 10px rgba(0,0,0,0.3);
-                    "></div>
-                    
-                    <!-- Pot handles -->
-                    <div style="
+                    }}
+                    .handle-left {{
                         position: absolute;
                         left: -25px;
                         top: 30px;
@@ -544,8 +555,8 @@ if user_role == 'admin':
                         border-right: none;
                         border-radius: 40px 0 0 40px;
                         box-shadow: -5px 5px 10px rgba(0,0,0,0.4);
-                    "></div>
-                    <div style="
+                    }}
+                    .handle-right {{
                         position: absolute;
                         right: -25px;
                         top: 30px;
@@ -555,10 +566,8 @@ if user_role == 'admin':
                         border-left: none;
                         border-radius: 0 40px 40px 0;
                         box-shadow: 5px 5px 10px rgba(0,0,0,0.4);
-                    "></div>
-                    
-                    <!-- Inner shadow for depth -->
-                    <div style="
+                    }}
+                    .inner-shadow {{
                         position: absolute;
                         top: 15px;
                         left: 10px;
@@ -566,50 +575,59 @@ if user_role == 'admin':
                         bottom: 10px;
                         border-radius: 0 0 80px 80px;
                         box-shadow: inset 0 20px 40px rgba(0,0,0,0.6);
-                    "></div>
-                </div>
-                
-                <!-- Overflow coins when full -->
-                {f'''
-                <div style="
-                    position: absolute;
-                    top: -20px;
-                    display: flex;
-                    gap: 10px;
-                    animation: coinPop 0.5s ease;
-                ">
-                    <div style="
+                    }}
+                    .overflow-coins {{
+                        position: absolute;
+                        top: -20px;
+                        display: flex;
+                        gap: 10px;
+                        animation: coinPop 0.5s ease;
+                    }}
+                    .coin {{
                         width: 30px;
                         height: 30px;
                         background: radial-gradient(circle at 30% 30%, #FFD700, #DAA520);
                         border-radius: 50%;
                         box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset -2px -2px 4px rgba(0,0,0,0.2);
-                    "></div>
-                    <div style="
+                    }}
+                    .coin-small {{
                         width: 25px;
                         height: 25px;
-                        background: radial-gradient(circle at 30% 30%, #FFD700, #DAA520);
-                        border-radius: 50%;
-                        box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset -2px -2px 4px rgba(0,0,0,0.2);
-                    "></div>
+                    }}
+                    @keyframes shimmer {{
+                        0% {{ transform: translateY(0); }}
+                        100% {{ transform: translateY(-50px); }}
+                    }}
+                    @keyframes coinPop {{
+                        0% {{ transform: translateY(20px) scale(0); opacity: 0; }}
+                        50% {{ transform: translateY(-10px) scale(1.2); opacity: 1; }}
+                        100% {{ transform: translateY(0) scale(1); opacity: 1; }}
+                    }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="coins">
+                        <div class="sparkles"></div>
+                    </div>
+                    
+                    <div class="pot">
+                        <div class="pot-rim"></div>
+                        <div class="handle-left"></div>
+                        <div class="handle-right"></div>
+                        <div class="inner-shadow"></div>
+                    </div>
+                    
+                    {f'''<div class="overflow-coins">
+                        <div class="coin"></div>
+                        <div class="coin coin-small"></div>
+                    </div>''' if progress_percentage >= 100 else ''}
                 </div>
-                ''' if progress_percentage >= 100 else ''}
-            </div>
-            
-            <style>
-                @keyframes shimmer {{
-                    0% {{ transform: translateY(0); }}
-                    100% {{ transform: translateY(-50px); }}
-                }}
-                @keyframes coinPop {{
-                    0% {{ transform: translateY(20px) scale(0); opacity: 0; }}
-                    50% {{ transform: translateY(-10px) scale(1.2); opacity: 1; }}
-                    100% {{ transform: translateY(0) scale(1); opacity: 1; }}
-                }}
-            </style>
+            </body>
+            </html>
             """
             
-            st.markdown(pot_html, unsafe_allow_html=True)
+            components.html(pot_html, height=300)
         
         if donors:
             # Metrics
