@@ -166,7 +166,9 @@ def extract_with_vision_agent(image_bytes):
                                 "- Analyze cursive and capital letters carefully\n"
                                 "- Look for fields labeled 'Name', 'Donor', 'Full Name', etc.\n"
                                 "- Look for fields labeled 'Amount', 'Donation', '$'" )
-
+                        }
+                    ]
+                }]    
 def process_with_data_agent(extracted_data):
     """Use Processing Agent to validate and clean data"""
     try:
