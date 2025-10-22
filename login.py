@@ -392,24 +392,12 @@ if user_role == 'admin':
     st.title("📊 Live Donation Dashboard")
     st.caption("🔒 Admin View")
     
-    # Logout button
+    # Logout button in sidebar
     if st.sidebar.button("🚪 Logout"):
         st.session_state.user_role = 'select'
         st.rerun()
     
-    # Auto-refresh toggle and Stop button
-    col1, col2, col3 = st.columns([2, 1, 1])
-    with col2:
-        auto_refresh = st.checkbox("Auto-refresh", value=True)
-    with col3:
-        stop_event = st.button("🛑 Stop Event", type="primary")
-    
-    # Handle stop event
-    if stop_event:
-        st.session_state.event_stopped = True
-        st.rerun()
-    
-    # Check if event is stopped
+    # Check if event is stopped (for final report view)
     if st.session_state.get('event_stopped', False):
         st.title("📋 Final Donation Report")
         st.caption("Event has been stopped")
@@ -524,6 +512,18 @@ if user_role == 'admin':
     
     else:
         # Normal dashboard view (when event is active)
+        # Auto-refresh toggle and Stop button at the top
+        col1, col2, col3 = st.columns([2, 1, 1])
+        with col2:
+            auto_refresh = st.checkbox("Auto-refresh", value=True)
+        with col3:
+            stop_event = st.button("🛑 Stop Event", type="primary")
+        
+        # Handle stop event
+        if stop_event:
+            st.session_state.event_stopped = True
+            st.rerun()
+        
         # Donation goal
         GOAL = 2000.0
         
