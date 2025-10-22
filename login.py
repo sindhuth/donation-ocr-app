@@ -634,10 +634,10 @@ if user_role == 'admin':
         else:
             st.info("No confirmed donations yet. Waiting for editor approval...")
         
-        # Auto-refresh
-        if auto_refresh:
-            time.sleep(5)
-            st.rerun()
+        # # Auto-refresh
+        # if auto_refresh:
+        #     time.sleep(5)
+        #     st.rerun()
 
 # ==================== EDITOR SCREEN ====================
 elif user_role == 'editor':
