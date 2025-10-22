@@ -531,10 +531,10 @@ if user_role == 'admin':
         # Progress bar
         progress_percentage = min((total / GOAL) * 100, 100)
         
-        # # Auto-refresh toggle and Stop button
-        # col1, col2, col3 = st.columns([2, 1, 1])
-        # with col2:
-        #     auto_refresh = st.checkbox("Auto-refresh", value=True)
+        # Auto-refresh toggle and Stop button
+        col1, col2, col3 = st.columns([2, 1, 1])
+        with col2:
+            auto_refresh = st.checkbox("Auto-refresh", value=True)
         # with col3:
         #     stop_event = st.button("🛑 Stop Event", type="primary")
         
@@ -618,8 +618,8 @@ if user_role == 'admin':
                 st.balloons()
                 st.toast(f"💖 New donation from {name}: ${amount}")
                 
-                # Keep visible for 3 seconds
-                time.sleep(3)
+                # Keep visible for 4 seconds
+                time.sleep(4)
                 placeholder.empty()
                 
                 # Remember we already showed this donor
@@ -634,10 +634,10 @@ if user_role == 'admin':
         else:
             st.info("No confirmed donations yet. Waiting for editor approval...")
         
-        # # Auto-refresh
-        # if auto_refresh:
-        #     time.sleep(5)
-        #     st.rerun()
+        # Auto-refresh
+        if auto_refresh:
+            time.sleep(5)
+            st.rerun()
 
 # ==================== EDITOR SCREEN ====================
 elif user_role == 'editor':
