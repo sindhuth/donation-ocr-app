@@ -297,7 +297,7 @@ if 'session_id' not in st.session_state:
 if 'user_role' not in st.session_state:
     st.session_state.user_role = None
 
-# Determine user role
+# Get current roles from database
 admin_session, editor_session = get_roles()
 
 # Check if user already has a role assigned in this session
@@ -317,10 +317,10 @@ if user_role == 'select':
     st.title("🎯 Donation System")
     st.markdown("### Select Your Role")
     
-    # Check which roles are already taken
-    admin_session, editor_session = get_roles()
-    admin_taken = admin_session is not None
-    editor_taken = editor_session is not None
+    # Get fresh role data from database
+    admin_session_db, editor_session_db = get_roles()
+    admin_taken = admin_session_db is not None
+    editor_taken = editor_session_db is not None
     
     # Determine column layout based on available roles
     if not admin_taken and not editor_taken:
