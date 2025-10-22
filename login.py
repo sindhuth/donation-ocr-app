@@ -317,40 +317,68 @@ if user_role == 'select':
     st.title("🎯 Donation System")
     st.markdown("### Select Your Role")
     
-    col1, col2, col3 = st.columns(3)
+    # Check which roles are already taken
+    admin_session, editor_session = get_roles()
+    admin_taken = admin_session is not None
+    editor_taken = editor_session is not None
     
-    with col1:
-        st.markdown("#### 📊 Admin")
-        st.write("View live dashboard, track donations, and generate reports")
-        admin_password = st.text_input("Admin Password", type="password", key="admin_pass")
-        if st.button("Login as Admin", use_container_width=True):
-            if admin_password == "admin123":  # Change this password!
-                clear_all_sessions()  # Clear existing sessions
-                set_role('admin', st.session_state.session_id)
-                st.session_state.user_role = 'admin'
-                st.success("✅ Logged in as Admin")
-                st.rerun()
-            else:
-                st.error("❌ Incorrect password")
+    # Determine column layout based on available roles
+    if not admin_taken and not editor_taken:
+        # All three options available
+        col1, col2, col3 = st.columns(3)
+    elif admin_taken and not editor_taken:
+        # Only editor and donor available
+        col1, col2 = st.columns(2)
+        col3 = None
+    elif not admin_taken and editor_taken:
+        # Only admin and donor available (shouldn't happen but handle it)
+        col1, col2 = st.columns(2)
+        col3 = None
+    else:
+        # Only donor available
+        col1 = st.container()
+        col2 = None
+        col3 = None
     
-    with col2:
-        st.markdown("#### ✏️ Editor")
-        st.write("Review and confirm donation submissions")
-        editor_password = st.text_input("Editor Password", type="password", key="editor_pass")
-        if st.button("Login as Editor", use_container_width=True):
-            if editor_password == "editor123":  # Change this password!
-                # Check if admin exists
-                if admin_session is None:
-                    st.error("❌ Admin must login first")
-                else:
-                    set_role('editor', st.session_state.session_id)
-                    st.session_state.user_role = 'editor'
-                    st.success("✅ Logged in as Editor")
+    # Show admin login if not taken
+    if not admin_taken:
+        with col1:
+            st.markdown("#### 📊 Admin")
+            st.write("View live dashboard, track donations, and generate reports")
+            admin_password = st.text_input("Admin Password", type="password", key="admin_pass")
+            if st.button("Login as Admin", use_container_width=True):
+                if admin_password == "admin123":  # Change this password!
+                    clear_all_sessions()  # Clear existing sessions
+                    set_role('admin', st.session_state.session_id)
+                    st.session_state.user_role = 'admin'
+                    st.success("✅ Logged in as Admin")
                     st.rerun()
-            else:
-                st.error("❌ Incorrect password")
+                else:
+                    st.error("❌ Incorrect password")
     
-    with col3:
+    # Show editor login if not taken and admin exists
+    if not editor_taken:
+        target_col = col2 if col2 else col1
+        with target_col:
+            st.markdown("#### ✏️ Editor")
+            st.write("Review and confirm donation submissions")
+            
+            if not admin_taken:
+                st.info("⚠️ Admin must login first before editor can access")
+            else:
+                editor_password = st.text_input("Editor Password", type="password", key="editor_pass")
+                if st.button("Login as Editor", use_container_width=True):
+                    if editor_password == "editor123":  # Change this password!
+                        set_role('editor', st.session_state.session_id)
+                        st.session_state.user_role = 'editor'
+                        st.success("✅ Logged in as Editor")
+                        st.rerun()
+                    else:
+                        st.error("❌ Incorrect password")
+    
+    # Show donor option (always available)
+    target_col = col3 if col3 else (col2 if col2 and editor_taken else col1)
+    with target_col:
         st.markdown("#### 📸 Donor")
         st.write("Upload donation form photos")
         if st.button("Continue as Donor", use_container_width=True):
