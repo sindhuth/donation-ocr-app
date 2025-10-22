@@ -390,7 +390,7 @@ if user_role == 'select':
 # ==================== ADMIN SCREEN ====================
 if user_role == 'admin':
     st.title("📊 Live Donation Dashboard")
-    st.caption("🔒 Admin View")
+    # st.caption("🔒 Admin View")
     
     # Logout button in sidebar
     if st.sidebar.button("🚪 Logout"):
@@ -531,17 +531,17 @@ if user_role == 'admin':
         # Progress bar
         progress_percentage = min((total / GOAL) * 100, 100)
         
-        # Auto-refresh toggle and Stop button
-        col1, col2, col3 = st.columns([2, 1, 1])
-        with col2:
-            auto_refresh = st.checkbox("Auto-refresh", value=True)
-        with col3:
-            stop_event = st.button("🛑 Stop Event", type="primary")
+        # # Auto-refresh toggle and Stop button
+        # col1, col2, col3 = st.columns([2, 1, 1])
+        # with col2:
+        #     auto_refresh = st.checkbox("Auto-refresh", value=True)
+        # with col3:
+        #     stop_event = st.button("🛑 Stop Event", type="primary")
         
-        # Handle stop event
-        if stop_event:
-            st.session_state.event_stopped = True
-            st.rerun()
+        # # Handle stop event
+        # if stop_event:
+        #     st.session_state.event_stopped = True
+        #     st.rerun()
         
         st.markdown(f"### 🎯 Fundraising Goal: ${GOAL:,.2f}")
         st.progress(progress_percentage / 100)
