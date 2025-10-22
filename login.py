@@ -512,18 +512,6 @@ if user_role == 'admin':
     
     else:
         # Normal dashboard view (when event is active)
-        # Auto-refresh toggle and Stop button at the top
-        col1, col2, col3 = st.columns([2, 1, 1])
-        with col2:
-            auto_refresh = st.checkbox("Auto-refresh", value=True)
-        with col3:
-            stop_event = st.button("🛑 Stop Event", type="primary")
-        
-        # Handle stop event
-        if stop_event:
-            st.session_state.event_stopped = True
-            st.rerun()
-        
         # Donation goal
         GOAL = 2000.0
         
@@ -542,6 +530,19 @@ if user_role == 'admin':
         
         # Progress bar
         progress_percentage = min((total / GOAL) * 100, 100)
+        
+        # Auto-refresh toggle and Stop button
+        col1, col2, col3 = st.columns([2, 1, 1])
+        with col2:
+            auto_refresh = st.checkbox("Auto-refresh", value=True)
+        with col3:
+            stop_event = st.button("🛑 Stop Event", type="primary")
+        
+        # Handle stop event
+        if stop_event:
+            st.session_state.event_stopped = True
+            st.rerun()
+        
         st.markdown(f"### 🎯 Fundraising Goal: ${GOAL:,.2f}")
         st.progress(progress_percentage / 100)
         st.markdown(f"**{progress_percentage:.1f}% Complete** — ${total:,.2f} of ${GOAL:,.2f} raised")
