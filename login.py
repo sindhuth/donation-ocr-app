@@ -396,7 +396,7 @@ if user_role == 'select':
 if user_role == 'admin':
     col1, col2 = st.columns([1, 2])
     with col1:
-        st.image("logo.png", use_container_width=True)  
+        st.image("logo.png", width=200)  
     with col2:
         st.markdown("<h4 style='text-align: center;'>TAMIL NADU FOUNDATION - AUSTIN</h3>", unsafe_allow_html=True)
    
