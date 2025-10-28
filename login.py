@@ -394,7 +394,7 @@ if user_role == 'select':
 
 # ==================== ADMIN SCREEN ====================
 if user_role == 'admin':
-    col1, col2, col3 = st.columns([1, 2, 1])
+    col1, col2 = st.columns([1, 2])
     with col1:
         st.image("logo.png", use_container_width=True)  
     with col2:
