@@ -314,6 +314,8 @@ user_role = st.session_state.user_role
 
 # ==================== ROLE SELECTION SCREEN ====================
 if user_role == 'select':
+    
+    st.image("logo.png", width=300)
     st.title("🎯 Donation System")
     st.markdown("### Select Your Role")
     
@@ -389,6 +391,7 @@ if user_role == 'select':
 
 # ==================== ADMIN SCREEN ====================
 if user_role == 'admin':
+    st.image("logo.png", width=300)
     st.title("📊 Live Donation Dashboard")
     # st.caption("🔒 Admin View")
     
@@ -641,6 +644,7 @@ if user_role == 'admin':
 
 # ==================== EDITOR SCREEN ====================
 elif user_role == 'editor':
+    st.image("logo.png", width=300)
     st.title("✏️ Donation Editor")
     st.caption("🔐 Editor View - Review and confirm donations")
     
@@ -702,6 +706,7 @@ elif user_role == 'editor':
 
 # ==================== DONOR UPLOAD SCREEN ====================
 else:
+    st.image("logo.png", width=300)
     st.title("📸 Donation Form Upload")
     st.write("Take a photo of the donation form to submit.")
     
