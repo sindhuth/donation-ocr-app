@@ -395,8 +395,10 @@ if user_role == 'select':
 # ==================== ADMIN SCREEN ====================
 if user_role == 'admin':
     col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
+    with col1:
         st.image("logo.png", use_container_width=True)  
+    with col2:
+        st.title("TAMIL NADU FOUNDATION - AUSTIN")
    
     st.title("📊 Live Donation Dashboard")
     # st.caption("🔒 Admin View")
@@ -554,7 +556,7 @@ if user_role == 'admin':
         
         st.markdown(f"### 🎯 Fundraising Goal: ${GOAL:,.2f}")
         st.progress(progress_percentage / 100)
-        st.markdown(f"**{progress_percentage:.1f}% Complete** — ${total:,.2f} of ${GOAL:,.2f} raised")
+        st.markdown(f"**{progress_percentage:.1f}% Complete** — ${total:,.2f}  of  ${GOAL:,.2f} raised")
         
         if donors:
             # Metrics
