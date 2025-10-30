@@ -633,8 +633,8 @@ if user_role == 'admin':
                 st.balloons()
                 st.toast(f"💖 New donation from {name}: ${amount}")
                 
-                # Keep visible for 4 seconds
-                time.sleep(4)
+                # Keep visible for 5 seconds
+                time.sleep(5)
                 placeholder.empty()
                 
                 # Remember we already showed this donor
