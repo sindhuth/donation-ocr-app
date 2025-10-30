@@ -653,7 +653,7 @@ if user_role == 'admin':
         
         # # Auto-refresh
         # if auto_refresh:
-        time.sleep(5)
+        time.sleep(3)
         st.rerun()
 
 # ==================== EDITOR SCREEN ====================
