@@ -549,7 +549,7 @@ if user_role == 'admin':
         # with col2:
         #     auto_refresh = st.checkbox("Auto-refresh", value=True)
         with col3:
-            stop_event = st.button("🛑", type="primary")
+            stop_event = st.button(label= "Thank you", type="secondary")
         
         # Handle stop event
         if stop_event:
