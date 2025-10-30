@@ -402,7 +402,7 @@ if user_role == 'admin':
         st.markdown("<h4 style='text-align: center; color: #FF6B35;'>SUPPORT BASIC EDUCATION FOR UNDERSERVED STUDENTS</h4>",unsafe_allow_html=True)
 
    
-    st.title("📊 Live Donation Dashboard")
+    st.markdown("<h3>📊 Live Donation Dashboard</h3>")
     stop_event = st.button(label= "Thank you", type="secondary")
     # st.markdown("<h3 style='text-align: left;'> 📊 Live Donation Dashboard</h3>",unsafe_allow_html=True)
     # st.caption("🔒 Admin View")
@@ -414,7 +414,7 @@ if user_role == 'admin':
     
     # Check if event is stopped (for final report view)
     if st.session_state.get('event_stopped', False):
-        st.title("📋 Final Donation Report")
+        st.markdown("<h3>📋 Final Donation Report</h3>")
         st.caption("Event has ended")
         
         donors = get_confirmed_donors()
