@@ -415,7 +415,7 @@ if user_role == 'admin':
     # Check if event is stopped (for final report view)
     if st.session_state.get('event_stopped', False):
         st.title("📋 Final Donation Report")
-        st.caption("Event has been stopped")
+        st.caption("Event has ended")
         
         donors = get_confirmed_donors()
         
@@ -430,7 +430,7 @@ if user_role == 'admin':
                     pass
             
             # Summary metrics
-            st.markdown("### 📊 Final Summary")
+            # st.markdown("### 📊 Final Summary")
             col1, col2, col3 = st.columns(3)
             with col1:
                 st.metric("💰 Total Raised", f"${total:,.2f}")
