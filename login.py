@@ -423,7 +423,7 @@ if user_role == 'admin':
     
     # Check if event is stopped (for final report view)
     if st.session_state.get('event_stopped', False):
-        st.title("📋 Final Donation Report</h3>")
+        st.title("📋 Final Donation Report")
         st.caption("Event has ended")
         
         donors = get_confirmed_donors()
