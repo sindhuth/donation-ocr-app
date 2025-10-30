@@ -549,7 +549,7 @@ if user_role == 'admin':
         # with col2:
         #     auto_refresh = st.checkbox("Auto-refresh", value=True)
         with col3:
-            stop_event = st.button("🛑 Stop Event", type="primary")
+            stop_event = st.button("🛑", type="primary")
         
         # Handle stop event
         if stop_event:
@@ -558,7 +558,9 @@ if user_role == 'admin':
         
         st.markdown(f"### 🎯 Fundraising Goal: ${GOAL:,.2f}")
         st.progress(progress_percentage / 100)
-        st.markdown(f"**{progress_percentage:.1f}% Complete** — ${total:,.2f}  of  ${GOAL:,.2f} raised")
+        # st.markdown(f"**{progress_percentage:.1f}% Complete** — ${total:,.2f}  of  ${GOAL:,.2f} raised")
+        st.markdown(f"<p style='text-align: center; font-size: 18px;'><b>{progress_percentage:.1f}% Complete</b> — <b>${total:,.2f}</b> of <b>${GOAL:,.2f}</b> raised</p>", unsafe_allow_html=True)
+        
         
         if donors:
             # Metrics
