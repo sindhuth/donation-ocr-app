@@ -434,11 +434,11 @@ if user_role == 'admin':
             col1, col2, col3 = st.columns(3)
             with col1:
                 st.metric("💰 Total Raised", f"${total:,.2f}")
-            with col2:
-                st.metric("🎁 Total Donations", len(donors))
-            with col3:
-                avg = total / len(donors) if len(donors) > 0 else 0
-                st.metric("📈 Average Donation", f"${avg:,.2f}")
+            # with col2:
+            #     st.metric("🎁 Total Donations", len(donors))
+            # with col3:
+            #     avg = total / len(donors) if len(donors) > 0 else 0
+            #     st.metric("📈 Average Donation", f"${avg:,.2f}")
             
             st.markdown("---")
             st.markdown("### 📋 All Donations")
