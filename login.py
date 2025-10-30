@@ -402,7 +402,8 @@ if user_role == 'admin':
         st.markdown("<h4 style='text-align: center; color: #FF6B35;'>SUPPORT BASIC EDUCATION FOR UNDERSERVED STUDENTS</h4>",unsafe_allow_html=True)
 
    
-    st.title("📊 Live Donation Dashboard")
+    # st.title("📊 Live Donation Dashboard")
+    st.markdown("<h3 style='text-align: right;'> 📊 Live Donation Dashboard"</h3>)
     # st.caption("🔒 Admin View")
     
     # Logout button in sidebar
