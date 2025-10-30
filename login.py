@@ -398,8 +398,8 @@ if user_role == 'admin':
     with col1:
         st.image("logo.png", width=200)  
     with col2:
-        st.markdown("<h3 style='text-align: center; color= #0066CC;'>TAMIL NADU FOUNDATION - AUSTIN</h3>", unsafe_allow_html=True)
-        st.markdown("<h4 style='text-align: center; color= #FF6B35;'>SUPPORT BASIC EDUCATION FOR UNDERSERVED STUDENTS</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align: center; color= #0066CC;'>TAMIL NADU FOUNDATION - AUSTIN</h3>")
+        st.markdown("<h4 style='text-align: center; color= #FF6B35;'>SUPPORT BASIC EDUCATION FOR UNDERSERVED STUDENTS</h4>")
 
    
     st.title("📊 Live Donation Dashboard")
