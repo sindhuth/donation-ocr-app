@@ -706,7 +706,7 @@ elif user_role == 'editor':
         with col2:
             if st.button("❌ Skip", use_container_width=True):
                 # Mark as confirmed but with a flag or delete
-                update_donor(donor_id, edited_name, edited_amount)
+                # update_donor(donor_id, edited_name, edited_amount)
                 st.rerun()
         
         # Show queue
