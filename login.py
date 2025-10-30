@@ -402,7 +402,8 @@ if user_role == 'admin':
         st.markdown("<h4 style='text-align: center; color: #FF6B35;'>SUPPORT BASIC EDUCATION FOR UNDERSERVED STUDENTS</h4>",unsafe_allow_html=True)
 
    
-    # st.title("📊 Live Donation Dashboard")
+    st.title("📊 Live Donation Dashboard")
+    stop_event = st.button(label= "Thank you", type="secondary")
     # st.markdown("<h3 style='text-align: left;'> 📊 Live Donation Dashboard</h3>",unsafe_allow_html=True)
     # st.caption("🔒 Admin View")
     
@@ -549,8 +550,8 @@ if user_role == 'admin':
         col1, col2, col3 = st.columns([2, 1, 1])
         # with col2:
         #     auto_refresh = st.checkbox("Auto-refresh", value=True)
-        with col1:
-            stop_event = st.button(label= "Live Donation Dashboard", type="secondary")
+        # with col1:
+        #     stop_event = st.button(label= "Thank you", type="secondary")
         
         # Handle stop event
         if stop_event:
@@ -647,8 +648,8 @@ if user_role == 'admin':
                 clear_all_donors()
                 st.session_state.last_shown_donor_id = None
                 st.rerun()
-        # else:
-        #     st.info("No confirmed donations yet. Waiting for editor approval...")
+        else:
+            st.info("Waiting for donations...")
         
         # # Auto-refresh
         # if auto_refresh:
