@@ -403,7 +403,7 @@ if user_role == 'admin':
 
    
     # st.title("📊 Live Donation Dashboard")
-    st.markdown("<h3 style='text-align: left;'> 📊 Live Donation Dashboard</h3>",unsafe_allow_html=True)
+    # st.markdown("<h3 style='text-align: left;'> 📊 Live Donation Dashboard</h3>",unsafe_allow_html=True)
     # st.caption("🔒 Admin View")
     
     # Logout button in sidebar
@@ -549,8 +549,8 @@ if user_role == 'admin':
         col1, col2, col3 = st.columns([2, 1, 1])
         # with col2:
         #     auto_refresh = st.checkbox("Auto-refresh", value=True)
-        with col3:
-            stop_event = st.button(label= "Thank you", type="secondary")
+        with col1:
+            stop_event = st.button(label= "Live Donation Dashboard", type="secondary")
         
         # Handle stop event
         if stop_event:
@@ -632,7 +632,7 @@ if user_role == 'admin':
                 
                 placeholder.markdown(card_html, unsafe_allow_html=True)
                 st.balloons()
-                st.toast(f"💖 New donation from {name}: ${amount}")
+                # st.toast(f"💖 New donation from {name}: ${amount}")
                 
                 # Keep visible for 5 seconds
                 time.sleep(5)
@@ -647,8 +647,8 @@ if user_role == 'admin':
                 clear_all_donors()
                 st.session_state.last_shown_donor_id = None
                 st.rerun()
-        else:
-            st.info("No confirmed donations yet. Waiting for editor approval...")
+        # else:
+        #     st.info("No confirmed donations yet. Waiting for editor approval...")
         
         # # Auto-refresh
         # if auto_refresh:
