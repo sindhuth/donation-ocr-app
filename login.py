@@ -399,6 +399,8 @@ if user_role == 'admin':
         st.image("logo.png", width=200)  
     with col2:
         st.markdown("<h3 style='text-align: center;'>TAMIL NADU FOUNDATION - AUSTIN</h3>", unsafe_allow_html=True)
+        st.markdown("<h4 style='text-align: center;'>SUPPORT BASIC EDUCATION FOR UNDERSERVED STUDENTS</h3>", unsafe_allow_html=True)
+
    
     st.title("📊 Live Donation Dashboard")
     # st.caption("🔒 Admin View")
