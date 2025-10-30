@@ -141,6 +141,15 @@ def get_confirmed_donors():
         conn.close()
         return donors
 
+def delete_donor(donor_id):
+    """Delete donor from database"""
+    with db_lock:
+        conn = sqlite3.connect('donors.db', check_same_thread=False)
+        c = conn.cursor()
+        c.execute('DELETE FROM donors WHERE id = ?', (donor_id,))
+        conn.commit()
+        conn.close()
+        
 def clear_all_donors():
     """Clear all donors from database"""
     with db_lock:
@@ -705,9 +714,10 @@ elif user_role == 'editor':
         
         with col2:
             if st.button("❌ Skip", use_container_width=True):
-                # Mark as confirmed but with a flag or delete
-                # update_donor(donor_id, edited_name, edited_amount)
-                st.rerun()
+                # Delete the donor record instead of confirming
+                delete_donor(donor_id)
+                st.info("Record skipped and removed")
+                time.sleep(1)
         
         # Show queue
         if len(pending) > 1:
