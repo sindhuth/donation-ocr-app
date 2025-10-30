@@ -403,7 +403,7 @@ if user_role == 'admin':
 
    
     # st.title("📊 Live Donation Dashboard")
-    st.markdown("<h3 style='text-align: right;'> 📊 Live Donation Dashboard</h3>",unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align: left;'> 📊 Live Donation Dashboard</h3>",unsafe_allow_html=True)
     # st.caption("🔒 Admin View")
     
     # Logout button in sidebar
