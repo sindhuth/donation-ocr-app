@@ -537,7 +537,7 @@ if user_role == 'admin':
     else:
         # Normal dashboard view (when event is active)
         # Donation goal
-        GOAL = 15000.0
+        GOAL = 20000.0
         
         # Get confirmed donors
         donors = get_confirmed_donors()
